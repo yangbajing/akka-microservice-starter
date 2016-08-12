@@ -11,8 +11,7 @@ import org.asynchttpclient._
 import org.asynchttpclient.cookie.Cookie
 import org.asynchttpclient.proxy.ProxyServer
 import org.asynchttpclient.request.body.multipart.Part
-import org.json4s.jackson.{JsonMethods, Serialization}
-import org.json4s.{Formats, JValue}
+import play.api.libs.json.{JsValue, Json, Writes}
 
 import scala.concurrent.{ExecutionContext, Future, Promise}
 import scala.util.{Failure, Success, Try}
@@ -111,9 +110,9 @@ class HttpClient private(val client: AsyncHttpClient,
       this
     }
 
-    def setBody(json: JValue)(implicit jsonFormat: Formats): HttpClientBuilder = {
+    def setBody[T](body: T)(implicit wjs: Writes[T]): HttpClientBuilder = {
       header("Content-Type" -> "application/json;charset=utf-8")
-      setBody(Serialization.write(json))
+      setBody(Json.stringify(Json.toJson(body)))
     }
 
     def setBody(s: String): HttpClientBuilder = {
@@ -148,10 +147,10 @@ class HttpClient private(val client: AsyncHttpClient,
       this
     }
 
-    def executeJson(statusCodes: Int*)(implicit ec: ExecutionContext, jsonFormat: Formats, charset: Charset = StandardCharsets.UTF_8): Future[JValue] =
+    def executeJson(statusCodes: Int*)(implicit ec: ExecutionContext, charset: Charset = StandardCharsets.UTF_8): Future[JsValue] =
       execute().flatMap { resp =>
         if (statusCodes.contains(resp.getStatusCode) || statusCodes.isEmpty) {
-          Future.successful(JsonMethods.parse(resp.getResponseBody(charset)))
+          Future.successful(Json.parse(resp.getResponseBody(charset)))
         } else
           Future.failed(new RuntimeException(s"needs status code: ${statusCodes.mkString(",")}, but receive ${resp.getStatusCode}"))
       }

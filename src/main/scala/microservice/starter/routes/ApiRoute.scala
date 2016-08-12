@@ -9,7 +9,8 @@ import akka.http.scaladsl.server.Directives._
   * Created by Yang Jing (yangbajing@gmail.com) on 2016-07-28.
   */
 @Singleton
-class ApiRoute @Inject()(helloRoute: HelloRoute) {
+class ApiRoute @Inject()(helloRoute: HelloRoute,
+                         emailRoute: EmailReoute) {
 
   def apply(pathname: String = "api") =
     pathPrefix(pathname) {
@@ -18,7 +19,8 @@ class ApiRoute @Inject()(helloRoute: HelloRoute) {
           complete(HttpResponse(entity = HttpEntity.Empty))
         }
       } ~
-        helloRoute()
+        helloRoute() ~
+        emailRoute()
     }
 
 }

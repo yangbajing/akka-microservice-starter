@@ -39,9 +39,13 @@ object Build extends Build {
         "Typesafe Snapshots" at "http://repo.typesafe.com/typesafe/snapshots/",
         "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots"),
       libraryDependencies ++= Seq(
+        _redisclient,
+        _commonsEmail,
         _ssc,
         _asyncHttpClient,
-        _json4sJackson,
+        _playJson,
+        _jacksonModuleScala,
+        _akkaHttpJackson,
         _akkaHttp,
         _akkaActor,
         _akkaSlf4j,
@@ -52,7 +56,7 @@ object Build extends Build {
         _scalaLogging,
         _scalatest))
 
-  val _scalaReflect = "org.scala-lang" %  "scala-reflect"  % "2.11.8"
+  val _scalaReflect = "org.scala-lang" % "scala-reflect" % "2.11.8"
   val _scalaXml = "org.scala-lang.modules" %% "scala-xml" % "1.0.5"
   val _scalatest = "org.scalatest" %% "scalatest" % "2.2.6" % "test"
   val _typesafeConfig = "com.typesafe" % "config" % "1.3.0"
@@ -62,6 +66,7 @@ object Build extends Build {
   val verAkka = "2.4.8"
   val _akkaHttp = "com.typesafe.akka" %% "akka-http-experimental" % verAkka
   val _akkaActor = "com.typesafe.akka" %% "akka-actor" % verAkka
+  val _akkaHttpJackson = "com.typesafe.akka" %% "akka-http-jackson-experimental" % verAkka
   val _akkaSlf4j = "com.typesafe.akka" %% "akka-slf4j" % verAkka
 
   val _ssc = "com.elderresearch" %% "ssc" % "0.2.0"
@@ -70,11 +75,13 @@ object Build extends Build {
 
   val _redisclient = "net.debasishg" %% "redisclient" % "3.0"
 
-  val _json4sJackson = "org.json4s" %% "json4s-jackson" % "3.3.0"
+  val _playJson = "com.typesafe.play" %% "play-json" % "2.5.4"
 
-  val _mongoScala = "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0"
+  val _jacksonModuleScala = "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.7.5"
 
-  val _asyncHttpClient = "org.asynchttpclient" % "async-http-client" % "2.0.10"
+  //  val _mongoScala = "org.mongodb.scala" %% "mongo-scala-driver" % "1.0.0"
+
+  val _asyncHttpClient = "org.asynchttpclient" % "async-http-client" % "2.0.11"
 
   val _logback = "ch.qos.logback" % "logback-classic" % "1.1.3"
   val _commonsEmail = "org.apache.commons" % "commons-email" % "1.4"
